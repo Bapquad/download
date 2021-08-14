@@ -1,2 +1,2 @@
-# Sample Files for Train
+# Sample Files for Training
 List of topics
