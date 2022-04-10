@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+<script type="text/javascript" src="../../element5.js"></script>
+<script type="text/javascript">
+// Sets up the title of document.
+document.title = "Demo Store Open IndexedDB."; 
+
+// Style lines.
+style5.AddCss( 'body' ).css( 
+{
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+});
+
+// Designs a title of page.
+var titlePage = element5.Create( 'h1#top-page' );
+titlePage.innerText = document.title; 
+
+var store;
+var db;
+var link = store5.open( 'indexed_db', 'program' );
+
+link.connect = function() 
+{
+	db = this;
+}; 
+
+function Upgrade() 
+{
+	link.upgrade( 2, 
+		{ name: 'misson_one', key: 'id', 
+			structure: 
+			[ 
+				{ name: 'player_name', key: ['playerName', 'playerBirth'], types: { unique: true } },
+			] 
+		}
+	);
+	
+	return; 
+}
+
+function UpgradeUp() 
+{
+	link.upgrade( 4, 
+		{ name: 'misson_two', key: 'id', 
+			structure: 
+			[ 
+				{ name: 'player_name', key: 'playerName', types: { unique: false } }, 
+				{ name: 'player_birth', key: 'playerBirth', types: { unique: false } } 
+			] 
+		}, 
+		{ name: 'misson_final', key: 'id', 
+			structure: 
+			[ 
+				{ name: 'player_name', key: 'playerName', types: { unique: false } }, 
+				{ name: 'player_birth', key: 'playerBirth', types: { unique: false } } 
+			] 
+		}
+	);
+}
+
+function UpgradeFinal() 
+{
+	link.upgrade( 3, 
+		{ name: 'misson_one', key: 'id', 
+			structure: 
+			[ 
+				{ name: 'player_name', key: 'playerName', types: { unique: true } }, 
+				{ name: 'player_birth', key: 'playerBirth', types: { unique: false } }, 
+			] 
+		}
+	);
+}
+
+function UpgradeDestroy() 
+{
+	link.upgrade( 4, { name: 'misson_one' } );
+}
+
+function AddData( id, username, brithday ) 
+{
+	var request;
+	store = db.From( 'misson_one' ); 
+	if( store ) 
+	{
+		request = store.add( { id: id, playerName: username, playerBirth: brithday } ); 
+	}
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( 'ADDED!!!' );
+		}
+		
+		request.onerror = function( e ) 
+		{
+			console.error( 'ERROR!!!' );
+		}
+	}
+	
+	return;
+} 
+
+function ClearData() 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.clear(); 
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( 'Clear DONE!!!' );
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Clear ERROR!!!' );
+		}
+	}
+	
+	return; 
+} 
+
+function CountData() 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.count(); 
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( e.target.result );
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Count ERROR!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function DeleteData( id ) 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.delete( id );
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( 'Delete DONE!!!' ); 
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Delete ERROR!!!' );
+		}
+	} 
+	
+	return; 
+}
+
+function GetData( id ) 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.get( id );
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( request.result ); 
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Get FAIL!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function NoteData( id ) 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.get( id );
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			var data = request.result;
+			
+			data.notified = 'yes'; 
+			
+			var noteRequest = store.put( data ); 
+			
+			if( noteRequest ) 
+			{
+				noteRequest.onsuccess = function( e ) 
+				{
+					GetData( id );
+				};
+			}
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Get FAIL!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function GetAllData() 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.getAll();
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( request.result ); 
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Get FAIL!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function OpenAllKeys() 
+{
+	var request;
+	
+	store = db.From( 'misson_one', IDBTransaction.READ_ONLY ); 
+	
+	if( store ) 
+	{
+		request = store.openKeyCursor();
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			var cursor = e.target.result; 
+			if( cursor ) 
+			{
+				console.log( cursor );
+				cursor.continue();
+			} 
+			else 
+			{
+				console.log( 'no more results' );
+			}
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Get FAIL!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function OpenAllData() 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.openCursor();
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			var cursor = e.target.result; 
+			if( cursor ) 
+			{
+				console.log( cursor );
+				cursor.continue();
+			} 
+			else 
+			{
+				console.log( 'no more results' );
+			}
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Get FAIL!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function GetAllKey() 
+{
+	var request;
+	
+	store = db.From( 'misson_one' ); 
+	
+	if( store ) 
+	{
+		request = store.getAllKeys();
+	} 
+	
+	if( request ) 
+	{
+		request.onsuccess = function( e ) 
+		{
+			console.log( request.result ); 
+		} 
+		
+		request.onerror = function( e ) 
+		{
+			console.log( 'Get FAIL!!!' );
+		}
+	} 
+	
+	return;
+} 
+
+function GetIndex( indexName ) 
+{
+	var request;
+	var indexs;
+	
+	store = db.From( 'misson_one', IDBTransaction.READ_ONLY ); 
+	
+	if( store ) 
+	{
+		indexs = store.index( indexName );
+		if( indexs ) 
+		{
+			request = indexs.openCursor();
+			if( request ) 
+			{
+				request.onsuccess = function( e ) 
+				{
+					var cursor = e.target.result;
+					if( cursor ) 
+					{
+						console.log( cursor );
+						cursor.continue();
+					} 
+					else 
+					{
+						console.log( 'no more result.' );
+					}
+				}; 
+			}
+		} 
+	} 
+	return true;
+} 
+
+
+
+// When window load DOM Content completely.
+window.addEventListener( 'DOMContentLoaded', function( e ) 
+{
+	document.body = element5.GetBody();
+	document.body.Equip( titlePage );
+}, false );
+</script>
+</head>
+
+<body></body>
+</html>

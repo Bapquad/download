@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+<script type="text/javascript" src="../../element5.js"></script>
+<script type="text/javascript">
+solution5.Debug( 'ON' );
+
+// Sets up the title of document.
+document.title = "Demo Camera Start";
+
+// Style lines.
+style5.AddCss( 'body' ).css( 
+{
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+});
+
+// Create the title page element.
+var titlePage = element5.Create( 'h2#top-page' );
+titlePage.innerText = document.title; 
+
+
+// When the window complete load DOM Content.
+window.addEventListener( 'DOMContentLoaded', function( e ) 
+{
+	document.body = element5.GetBody();
+	
+	var video = media5.StartCamera( element5.Create( 'video#videoTag' ), 640, 340 );
+	video.addEventListener( 'click', function( e ) 
+	{
+		if( this.nextCamera ) 
+		{
+			this.nextCamera();
+		}
+	}, false );
+	
+	document.body.Equip( titlePage );
+	document.body.Equip( video );
+}, true);
+</script>
+</head>
+
+<body>
+
+</body>
+</html>

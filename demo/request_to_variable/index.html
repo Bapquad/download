@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+<script type="text/javascript" src="../../element5.js"></script>
+<script type="text/javascript">
+
+// Setting the title of window.
+document.title = "Demo Request The Remote Variables";
+
+// Style lines.
+style5.AddCss( 'body' ).css( 
+{
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+});
+
+// Create the title page element.
+var titlePage = element5.Create( 'h2#top-page' );
+titlePage.innerText = document.title; 
+
+// Create elements show load status.
+var statusBar = element5.Create( 'p.status' );
+statusBar.innerText = 'Waiting...'; 
+
+// Create elements show username.
+var userSection = element5.Create( 'p.username' );
+var userNameLabel = element5.Create( 'span.label' );
+userNameLabel.innerText = "Username: ";
+var userNameValue = element5.Create( 'span.value' ); 
+userNameValue.innerText = "Unknown.";
+userSection.Equip( userNameLabel );
+userSection.Equip( userNameValue ); 
+
+// Create elements show password.
+var passSection = element5.Create( 'p.password' );
+var passwordLabel = element5.Create( 'span.label' );
+passwordLabel.innerText = "Password: ";
+var passwordValue = element5.Create( 'span.value' );
+passwordValue.innerText = "Unknown.";
+passSection.Equip( passwordLabel ); 
+passSection.Equip( passwordValue ); 
+
+// Create elements show age.
+var ageSection = element5.Create( 'p.age' );
+var ageLabel = element5.Create( 'span.label' );
+ageLabel.innerText = "Age: "; 
+var ageValue = element5.Create( 'span.value' ); 
+ageValue.innerText = "Unknown.";
+ageSection.Equip( ageLabel );
+ageSection.Equip( ageValue ); 
+
+// create event handle
+function readData( e ) 
+{
+	var data = request.readVariables(); 
+	if( data ) 
+	{
+		userNameValue.innerText = data.username;
+		passwordValue.innerText = data.password;
+		ageValue.innerText = data.age;
+	}
+}
+
+function fixUrl( e ) 
+{
+	request.requestUrl = 'http://localhost/mytxt.txt';
+	request.Connect(); 
+}
+
+// Create elements read data button.
+var searchButton = element5.Create( 'button' );
+searchButton.innerText = "Read";
+searchButton.addEventListener( 'click', readData, false ); 
+
+// Create elements read data button.
+var fixButton = element5.Create( 'button' ).css( 'margin-left', '10px' );
+fixButton.innerText = "Fix Error";
+fixButton.addEventListener( 'click', fixUrl, false );
+
+var request = request5.LoadVariables( 'http://localhost/mytxt1.txt', function( e ) 
+{
+	if( request.status == 404 ) 
+		statusBar.innerText = "Complete with a problem, not found the url!";
+	else 
+		statusBar.innerText = "Complete without problem!";
+}, null); 
+
+// On window load complete for Dom Content Loaded Event.
+window.addEventListener( 'DOMContentLoaded', function( e ) 
+{
+	var body = element5.GetBody();
+	body.Equip( titlePage ); 
+	body.Equip( statusBar ); 
+	body.Equip( userSection );
+	body.Equip( passSection );
+	body.Equip( ageSection );
+	body.Equip( searchButton );
+	body.Equip( fixButton );
+}, false );
+
+</script>
+</head>
+
+<body></body>
+</html>

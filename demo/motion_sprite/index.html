@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+<script type="text/javascript" src="../../element5.js"></script>
+<script type="text/javascript">
+// Sets up the title of ducument.
+document.title = "Demo motion with sprite";
+
+// Style lines.
+style5.AddCss( 'body' ).css( 
+{
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+});
+
+// Designs a title of page.
+var titlePage = element5.Create( 'h1#top-page' );
+titlePage.innerText = document.title; 
+
+// Design a element show the sprite.
+var number = element5.Create( 'p' );
+number.css( { border: '1px solid #fff', backgroundColor: '#2d2a2b' } ); 
+
+// Create a sprite implement object.
+var sprite = motion5.Sprite( 100, 100, 'images/number.png' ).Effect( number );
+
+// Design a button to run the animation.
+var runBtn = element5.Create( 'button' ); 
+runBtn.css( 'margin-right', '10px' ).innerText = 'Run';
+runBtn.addEventListener( 'click', function() 
+{
+	number.MotionSprite.Run(); 
+}, false ); 
+
+// Design a button to pause the animation.
+var stopBtn = element5.Create( 'button' ); 
+stopBtn.css( 'margin-right', '10px' ).innerText = 'Stop';
+stopBtn.addEventListener( 'click', function( e ) 
+{
+	number.MotionSprite.Stop(); 
+}, false );
+
+// Design a button to pause the animation.
+var pauseBtn = element5.Create( 'button' ); 
+pauseBtn.innerText = 'Pause';
+pauseBtn.addEventListener( 'click', function( e ) 
+{
+	number.MotionSprite.Pause(); 
+}, false );
+
+var controlSection = element5.Create( 'div' );
+controlSection.Equip( runBtn );
+controlSection.Equip( stopBtn );
+controlSection.Equip( pauseBtn );
+
+window.addEventListener( 'DOMContentLoaded', function( e ) 
+{
+	document.body = element5.GetBody();
+	document.body.Equip( titlePage );
+	document.body.Equip( number );
+	document.body.Equip( controlSection	);
+}, false );
+</script>
+</head>
+
+<body>
+
+</body>
+</html>

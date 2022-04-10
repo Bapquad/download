@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../element5.js" type="text/javascript"></script> 
+<script type="text/javascript">
+// Sets up the title of document.
+document.title = "Demo start microphone.";
+
+// Add Css for page.
+style5.AddCss( 'body' ).css( 
+{
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+});
+
+// Create title of page.
+var titlePage = element5.Create( 'h2[id=top-page]' ); 
+titlePage.innerText = document.title; 
+
+// Create microphone button.
+var microwraper = 0;
+var stopButton = 0;
+var microphone = null;
+var microButton = element5.Create( 'img[src=classic.jpg]' ).css( { 'display': 'block', float: 'left', 'width': '30px', 'height': '60px' } );
+microButton.addEventListener( 'click', function( e ) 
+{
+	// start microphone.
+	if( microphone == null ) 
+	{
+		microphone = media5.StartMicrophone(); 
+		console.log( microphone );
+		if( !stopButton ) 
+		{
+			stopButton = element5( '#stop-button' ).css( { background: 'red', float: 'left', height: '25px' } ); 
+		
+			stopButton.addEventListener( 'click', function() 
+			{
+				if( microphone ) 
+				{
+					microphone.stopSession(); 
+					stopButton.innerText = "Thank you! You can click Microphone to Start Microphone.";
+				}
+			}, false );
+			
+			microwraper.Equip( nextButton );  
+			document.body.Equip( stopButton );
+		}
+	}
+	else 
+	{
+		microphone.nextDevice(); 
+	} 
+	
+	if( stopButton ) 
+	{
+		stopButton.innerText = "Click Me To Exit Microphone.";
+	}
+}, false ); 
+
+// Design a next button.
+var nextButton = element5.Create( 'span#next-button' ).css( { 'background': '#09f' } ); 
+nextButton.innerText = "Click Me To Try Other Microphone.";
+nextButton.addEventListener( 'click', function( e ) 
+{
+	if( microphone ) 
+	{
+		microphone.nextDevice();
+	} 
+	
+	if( stopButton ) 
+	{
+		stopButton.innerText = "Click Me To Exit Microphone.";
+	}
+}, false ); 
+
+// After window load complete DOM Content.
+window.addEventListener( 'DOMContentLoaded', function( e ) 
+{
+	document.body = element5.GetBody(); 
+	document.body.Equip( titlePage ); 
+	
+	microwraper = element5( '#micro-wrapper' );
+	microwraper.Equip( microButton );  
+	
+	document.body.Equip( microwraper );  
+	
+}, false );
+
+
+</script>
+</head>
+
+<body></body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+<script type="text/javascript" src="../../element5.js"></script>
+<script type="text/javascript">
+// Sets up title of document.
+document.title = "Demo Find The Position";
+
+// Save the server name. In the case, mobile testing.
+var web_dir = "http://bapquadgames.com/"; 
+
+// Set style of page. 
+style5.AddCss( 'body' ).css( 
+{
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+}); 
+
+// Create the title for page.
+var titlePage = element5.Create( 'h2[id=top-page]' );
+titlePage.innerText = document.title; 
+
+// Create the value slot.
+var positionSlot = element5.Create( 'p.label' );
+positionSlot.innerText = 'Your position is:'; 
+
+var coordText = element5.Create( 'p.coord' );
+
+// geo5 is a built-in object in element5.
+geo5.onDetect( function( e )  
+{
+	coordText.innerHTML = "Latitude: " + e.position.coords.latitude + " <br/>Lontitude: " + e.position.coords.longitude;
+	var config = e.ShowMyPositionOnMap(); 
+	map.innerHTML = '<img src="' + config + '" />';
+});
+
+// Create map element.
+var map = element5.Create( 'div.map' );
+
+// Get the current location.
+geo5.GetLocation(); 
+
+window.addEventListener( 'DOMContentLoaded', function( e ) 
+{
+	document.body = element5.GetBody();
+	document.body.Equip( titlePage );
+	document.body.Equip( positionSlot ); 
+	document.body.Equip( coordText ); 
+	document.body.Equip( map );
+}, false );
+</script>
+</head>
+
+<body>
+
+</body>
+</html>

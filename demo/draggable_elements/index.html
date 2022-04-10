@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, width=device-width" />
+<script type="text/javascript" src="../../element5.js"></script>
+<script type="text/javascript">
+
+// Setting the title of window.
+document.title = "Demo Draggable Element With element5";
+
+// Style lines.
+style5.AddCss( 'body' ).css( 
+{ 
+	'background': '#000', 
+	'color': '#fff', 
+	'font-family': 'Arial'
+});
+
+// Create the title page.
+var pageTitle = element5.Create( 'h2[id=top-page]' );
+pageTitle.innerText = document.title;
+
+// Create the host element for dragging.
+var host = element5( '.host', 1 ); 
+host.each( function( item, index ) 
+{
+	item.css( { width: '320px', height: '80px', background: 'red' } ); 
+	item.img = item.Equip( element5.Create( 'img' ) );
+	item.img.src = "http://bapquadgames.com/element5/logo/element5-light-logo.png";
+	item.img.alt = "The Draggable Image";
+	item.Draggable( false ); 
+});
+
+// Create the first pad for dropping.
+var padd1 = element5( '#padd1' );
+padd1.css( { width: '320px', height: '80px', background: 'blue', 'margin-top': '25px' } );
+padd1.Droppable( function( e ) { e.target.css( 'background', 'yellow' ); } );
+
+// Create the second pad for dropping.
+var padd2 = element5( '#padd2' );
+padd2.css( { width: '320px', height: '80px', background: 'blue' } );
+padd2.onDrop( function( e ) { e.target.css('background', 'green'); } );
+
+// Add elements to page body.
+window.addEventListener( 'DOMContentLoaded', function() 
+{
+	var body = element5.GetBody(); 
+	body.Equip( pageTitle );
+	body.Equip( host );
+	body.Equip( padd1 ); 
+	body.Equip( padd2 ); 
+}, true );
+	
+</script>
+<head>
+
+<body></body>
+</html>
