@@ -1,8 +1,6 @@
 # A download space for tools, sources, samples and more
 ## How to download
-1. Choose branch has name like what you want to download
-2. Click on branch and go to clicked branch
-3. Click on link of the release you want
+This is the download page [Release Page](https://github.com/Bapquad/download/releases)
 
 Or you can checkout this branch from local repository.
 
